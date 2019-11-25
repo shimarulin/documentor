@@ -1,0 +1,52 @@
+{
+  "name": "documentor",
+  "description": "Documentation site generator based on Gridsome",
+  "license": "MIT",
+  "private": true,
+  "repository": "git@github.com:shimarulin/documentor.git",
+  "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
+  "workspaces": [
+    "packages/@documentor/*"
+  ],
+  "scripts": {
+    "expose": "mkdir -p ~/.node_modules && ln -s -f \"$(pwd)\"/node_modules/* ~/.node_modules && lerna exec -- yarn link",
+    "format": "yarn format:json && yarn format:md && yarn format:pkg",
+    "format:json": "prettier --write \"**/*.json\"",
+    "format:md": "prettier --parser markdown --prose-wrap always --write \"**/*.md\"",
+    "format:pkg": "format-package --write",
+    "lint": "lerna run lint --parallel -- --color",
+    "lint:self": "eslint --ext .js ./*.js"
+  },
+  "husky": {
+    "hooks": {
+      "post-commit": "git update-index -g",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.json": [
+      "prettier --write",
+      "git add"
+    ],
+    "**/*.md": [
+      "prettier --parser markdown --prose-wrap always --write",
+      "git add"
+    ],
+    "**/*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "**/package.json": [
+      "format-package --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^6.7.1",
+    "format-package": "^5.2.0",
+    "husky": "4.0.0-beta.5",
+    "lerna": "^3.19.0",
+    "lint-staged": "10.0.0-beta.4",
+    "prettier": "^1.19.1"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@platr/documentor",
+  "version": "0.1.4",
+  "description": "Documentation site generator based on Gridsome",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimarulin/platr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shimarulin/platr/issues"
+  },
+  "homepage": "https://github.com/shimarulin/platr#readme",
+  "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
+  "scripts": {
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore",
+    "lint": "eslint --ext .js,.vue ."
+  },
+  "dependencies": {
+    "gridsome": "^0.7.0",
+    "gridsome-plugin-flexsearch": "^0.1.5"
+  },
+  "devDependencies": {
+    "@gridsome/vue-remark": "^0.1.9",
+    "@platr/eslint-config-vue": "^0.1.4"
+  }
+}

@@ -1,0 +1,6 @@
+### Gridsome
+.cache
+dist
+src/.temp
+.env
+.env.*
