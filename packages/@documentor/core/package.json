@@ -15,9 +15,9 @@
   "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
   "scripts": {
     "build": "gridsome build",
-    "develop": "gridsome develop",
     "explore": "gridsome explore",
-    "lint": "eslint --ext .js,.vue ."
+    "lint": "eslint --ext .js,.vue .",
+    "serve": "gridsome develop"
   },
   "dependencies": {
     "gridsome": "^0.7.0",

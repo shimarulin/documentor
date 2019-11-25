@@ -14,8 +14,9 @@
     "format:json": "prettier --write \"**/*.json\"",
     "format:md": "prettier --parser markdown --prose-wrap always --write \"**/*.md\"",
     "format:pkg": "format-package --write",
-    "lint": "lerna run lint --parallel -- --color",
-    "lint:self": "eslint --ext .js ./*.js"
+    "lint": "wsrun -c lint",
+    "lint:self": "eslint --ext .js ./*.js",
+    "serve": "mono-run serve --stream"
   },
   "husky": {
     "hooks": {
@@ -48,6 +49,8 @@
     "husky": "4.0.0-beta.5",
     "lerna": "^3.19.0",
     "lint-staged": "10.0.0-beta.4",
-    "prettier": "^1.19.1"
+    "monorepo-run": "^0.4.2",
+    "prettier": "^1.19.1",
+    "wsrun": "^5.1.0"
   }
 }
