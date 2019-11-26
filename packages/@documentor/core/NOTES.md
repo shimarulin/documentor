@@ -8,6 +8,8 @@
 - https://github.com/egoist/vue-feather-icons
 - https://github.com/maoberlehner/vue-lazy-hydration
 
+Remark plugins https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins
+
 ### Search
 
 - https://github.com/thetre97/gridsome-plugin-flexsearch
@@ -17,8 +19,7 @@
 - https://github.com/olivernn/lunr.js
   - https://github.com/olivernn/moonwalkers/blob/master/src/wrapper.js
   - https://github.com/nuxt-community/lunr-module
-
-Remark plugins https://github.com/remarkjs/remark/blob/master/doc/plugins.md#list-of-plugins
+  - https://docs.snipline.io/desktop/advanced/search/
 
 ## Roadmap
 
