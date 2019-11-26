@@ -1,6 +1,6 @@
 {
-  "name": "@platr/documentor",
-  "version": "0.1.4",
+  "name": "@documentor/core",
+  "version": "0.1.0",
   "description": "Documentation site generator core",
   "license": "MIT",
   "private": true,
