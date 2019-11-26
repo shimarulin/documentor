@@ -48,6 +48,17 @@ module.exports = {
           'title',
           'content',
         ],
+        flexsearch: {
+          profile: 'match',
+          encode: 'advanced',
+          tokenize: 'full',
+          // threshold: 1,
+          // resolution: 3,
+          depth: 3,
+
+          async: true,
+          worker: 4,
+        },
       },
     },
   ],
