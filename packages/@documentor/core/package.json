@@ -1,17 +1,17 @@
 {
   "name": "@platr/documentor",
   "version": "0.1.4",
-  "description": "Documentation site generator based on Gridsome",
+  "description": "Documentation site generator core",
   "license": "MIT",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shimarulin/platr.git"
+    "url": "git+https://github.com/shimarulin/documentor.git"
   },
   "bugs": {
-    "url": "https://github.com/shimarulin/platr/issues"
+    "url": "https://github.com/shimarulin/documentor/issues"
   },
-  "homepage": "https://github.com/shimarulin/platr#readme",
+  "homepage": "https://github.com/shimarulin/documentor#readme",
   "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
   "scripts": {
     "build": "gridsome build",

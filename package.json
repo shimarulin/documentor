@@ -3,7 +3,14 @@
   "description": "Documentation site generator based on Gridsome",
   "license": "MIT",
   "private": true,
-  "repository": "git@github.com:shimarulin/documentor.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimarulin/documentor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shimarulin/documentor/issues"
+  },
+  "homepage": "https://github.com/shimarulin/documentor#readme",
   "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
   "workspaces": [
     "packages/@documentor/*"
