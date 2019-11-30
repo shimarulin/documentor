@@ -20,10 +20,11 @@
     "serve": "gridsome develop"
   },
   "dependencies": {
-    "gridsome": "^0.7.0",
-    "gridsome-plugin-flexsearch": "^0.1.5"
+    "gridsome": "^0.7.0"
   },
   "devDependencies": {
+    "@documentor/gridsome-plugin-fuse": "^0.1.0",
+    "@documentor/gridsome-plugin-git-info": "^0.1.0",
     "@gridsome/vue-remark": "^0.1.9",
     "@platr/eslint-config-vue": "^0.1.4"
   }

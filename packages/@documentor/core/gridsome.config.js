@@ -8,6 +8,10 @@ module.exports = {
   siteName: 'Standard',
   plugins: [
     {
+      use: '@documentor/gridsome-plugin-git-info',
+      options: {},
+    },
+    {
       use: '@gridsome/vue-remark',
       options: {
         typeName: 'Documentation',
@@ -32,33 +36,17 @@ module.exports = {
       },
     },
     {
-      use: 'gridsome-plugin-flexsearch',
+      use: '@documentor/gridsome-plugin-fuse',
       options: {
         collections: [
           {
             typeName: 'Documentation',
-            indexName: 'DocumentationIndex',
             fields: [
               'title',
               'content',
             ],
           },
         ],
-        searchFields: [
-          'title',
-          'content',
-        ],
-        flexsearch: {
-          profile: 'match',
-          encode: 'advanced',
-          tokenize: 'full',
-          // threshold: 1,
-          // resolution: 3,
-          depth: 3,
-
-          async: true,
-          worker: 4,
-        },
       },
     },
   ],
