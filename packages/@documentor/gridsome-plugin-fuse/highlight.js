@@ -23,13 +23,23 @@ export const highlight = (fuseSearchResult, highlightClassName = 'highlight', ta
 
     regions.forEach(region => {
       const lastRegionNextIndex = region[1] + 1
+      const startSubString = inputText.substring(nextUnhighlightedRegionStartingIndex, region[0])
+      const endSubString = inputText.substring(region[0], lastRegionNextIndex)
+      const hasCodeBlockMath = startSubString.search(/```[a-z]*$/g) !== -1
 
-      content += [
-        inputText.substring(nextUnhighlightedRegionStartingIndex, region[0]),
-        `<${tagName} class="${highlightClassName}">`,
-        inputText.substring(region[0], lastRegionNextIndex),
-        `</${tagName}>`,
-      ].join('')
+      if (hasCodeBlockMath) {
+        content += [
+          startSubString,
+          endSubString,
+        ].join('')
+      } else {
+        content += [
+          startSubString,
+          `<${tagName} class="${highlightClassName}">`,
+          endSubString,
+          `</${tagName}>`,
+        ].join('')
+      }
 
       nextUnhighlightedRegionStartingIndex = lastRegionNextIndex
     })
