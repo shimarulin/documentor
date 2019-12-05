@@ -13,7 +13,8 @@
   "directories": {},
   "files": [
     "gridsome.client.js",
-    "gridsome.server.js"
+    "gridsome.server.js",
+    "highlight.js"
   ],
   "publishConfig": {
     "access": "public"

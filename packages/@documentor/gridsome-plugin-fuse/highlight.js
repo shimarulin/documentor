@@ -3,7 +3,7 @@ import { clone } from 'ramda'
 // https://github.com/krisk/Fuse/issues/6
 // modified version of
 // https://gist.github.com/evenfrost/1ba123656ded32fb7a0cd4651efd4db0
-export const highlight = (fuseSearchResult, highlightClassName = 'highlight', tagName = 'mark') => {
+export const highlight = (fuseSearchResult, highlightClassName, tagName = 'mark') => {
   // Use deep clone from Rambda to avoid mutation origin results
   const _fuseSearchResult = clone(fuseSearchResult)
   const set = (obj, path, value) => {
@@ -35,7 +35,7 @@ export const highlight = (fuseSearchResult, highlightClassName = 'highlight', ta
       } else {
         content += [
           startSubString,
-          `<${tagName} class="${highlightClassName}">`,
+          `<${tagName}${highlightClassName ? ` class="${highlightClassName}"` : ''}>`,
           endSubString,
           `</${tagName}>`,
         ].join('')
