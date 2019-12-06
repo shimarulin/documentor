@@ -3,6 +3,7 @@ import { clone } from 'ramda'
 // https://github.com/krisk/Fuse/issues/6
 // modified version of
 // https://gist.github.com/evenfrost/1ba123656ded32fb7a0cd4651efd4db0
+// see also https://github.com/brunocechet/Fuse.js-with-highlight/blob/master/index.js
 export const highlight = (fuseSearchResult, highlightClassName, tagName = 'mark') => {
   // Use deep clone from Rambda to avoid mutation origin results
   const _fuseSearchResult = clone(fuseSearchResult)

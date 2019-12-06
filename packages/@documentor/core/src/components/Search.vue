@@ -64,9 +64,14 @@ export default {
       maxPatternLength: 32,
       minMatchCharLength: 1,
 
-      threshold: 0.5,
+      // threshold: 0,
       // location: 5,
-      distance: 1000,
+      // distance: 1000,
+
+      threshold: 0.6,
+      // tokenize: true,
+      location: 0,
+      distance: 10000,
 
       keys: [
         'node.title',
@@ -91,14 +96,14 @@ export default {
   }),
   computed: {
     processedResults () {
-      console.log(this.results)
-      // this.$route.meta.$vueRemark('<mark class="highlight">te</mark>st (duplicate header)').then(result => console.log(result))
       return this.$highlight(this.results).map(result => {
+        // console.log(result.node.content)
+        const html = this.$processor.processSync(result.node.content).contents
         return {
           id: result.node.id,
           title: result.node.title,
           path: result.node.path,
-          context: result.node.content,
+          context: html,
         }
       })
     },
@@ -108,15 +113,24 @@ export default {
       this.query = ''
     },
     query (nextQuery, prev) {
-      this.$search(nextQuery, this.$static.allDocumentation.edges, this.options)
-        .then(results => {
-          this.results = results
-        })
+      const isMinQuery = nextQuery.length >= 3
+      const options = {
+        ...this.options,
+        minMatchCharLength: nextQuery.length - 1,
+      }
+      if (isMinQuery) {
+        this.$search(nextQuery, this.$static.allDocumentation.edges, options)
+          .then(results => {
+            this.results = results
+          })
+      } else {
+        this.results = []
+      }
     },
   },
-  mounted () {
-    console.log(this)
-  },
+  // mounted () {
+  //   console.log(this)
+  // },
 }
 </script>
 

@@ -49,5 +49,9 @@ module.exports = {
         ],
       },
     },
+    {
+      use: '@documentor/gridsome-plugin-remark',
+      options: {},
+    },
   ],
 }

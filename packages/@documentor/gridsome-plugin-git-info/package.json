@@ -2,29 +2,29 @@
   "name": "@documentor/gridsome-plugin-git-info",
   "version": "0.1.0",
   "description": "Gridsome plugin to get info from git",
-  "keywords": [
-    "gridsome",
-    "git"
-  ],
-  "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
-  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-git-info#readme",
   "license": "MIT",
-  "main": "gridsome.server.js",
-  "directories": {},
-  "files": [
-    "gridsome.server.js"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shimarulin/documentor.git"
   },
-  "scripts": {
-    "lint": "eslint --ext .js ."
-  },
   "bugs": {
     "url": "https://github.com/shimarulin/documentor/issues"
+  },
+  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-git-info#readme",
+  "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
+  "keywords": [
+    "gridsome",
+    "git"
+  ],
+  "main": "gridsome.server.js",
+  "files": [
+    "gridsome.server.js"
+  ],
+  "directories": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js ."
   }
 }
