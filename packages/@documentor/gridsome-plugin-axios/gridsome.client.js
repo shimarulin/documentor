@@ -1,9 +1,6 @@
 import axios from 'axios'
 
-export default function (Vue, options, context) {
-  // console.log(Vue)
-  console.log(options)
-  console.log(context)
+export default function (Vue, options) {
   Vue.prototype.$axios = axios.create({
     ...options,
   })
