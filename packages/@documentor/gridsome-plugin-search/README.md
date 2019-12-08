@@ -43,9 +43,10 @@ module.exports = {
 
 ### FlexSearch + QuickScore
 
-1. Create FlexSearch index
-2. Create suggestions index
-3. Find results by query with FlexSearch
-4. get matches in founded documents with QuickScore
-5. mark matches words/symbols
-6. trim content around words/symbols
+- https://github.com/fwextensions/quick-score
+
+- Create suggestions index
+- Search results in suggestions by query with QuickScore or Fuse.js
+- Search results in document(index) suggestions
+- Mark matches words/symbols
+- Trim content around words/symbols
