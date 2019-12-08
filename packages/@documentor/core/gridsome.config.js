@@ -12,6 +12,10 @@ module.exports = {
       options: {},
     },
     {
+      use: '@documentor/gridsome-plugin-axios',
+      options: {},
+    },
+    {
       use: '@gridsome/vue-remark',
       options: {
         typeName: 'Documentation',
@@ -22,9 +26,7 @@ module.exports = {
         // pathPrefix: '/', // by default
         pathPrefix: '/',
         template: './src/templates/Documentation.vue',
-        // plugins: [
-        //   '@gridsome/remark-prismjs',
-        // ],
+        plugins: [],
         // remark: {
         //   autolinkHeadings: {
         //     content: {
@@ -35,22 +37,26 @@ module.exports = {
         // },
       },
     },
+    // {
+    //   use: '@documentor/gridsome-plugin-fuse',
+    //   options: {
+    //     collections: [
+    //       {
+    //         typeName: 'Documentation',
+    //         fields: [
+    //           'title',
+    //           'content',
+    //         ],
+    //       },
+    //     ],
+    //   },
+    // },
+    // {
+    //   use: '@documentor/gridsome-plugin-remark',
+    //   options: {},
+    // },
     {
-      use: '@documentor/gridsome-plugin-fuse',
-      options: {
-        collections: [
-          {
-            typeName: 'Documentation',
-            fields: [
-              'title',
-              'content',
-            ],
-          },
-        ],
-      },
-    },
-    {
-      use: '@documentor/gridsome-plugin-remark',
+      use: '@documentor/gridsome-plugin-search',
       options: {},
     },
   ],

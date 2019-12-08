@@ -1,7 +1,8 @@
 <template>
   <div class="layout">
     <Header/>
-    <SearchBox/>
+<!--    <SearchBox/>-->
+    <Search/>
     <g-link to="/">
       {{ $static.metadata.siteName }}
     </g-link>
@@ -19,12 +20,12 @@ query {
 
 <script>
 import Header from './partials/Header'
-import SearchBox from '@/components/Search'
+// import SearchBox from '@/components/Search'
 
 export default {
   components: {
     Header,
-    SearchBox,
+    // SearchBox,
   },
 }
 </script>
