@@ -1,0 +1,40 @@
+{
+  "name": "@documentor/gridsome-plugin-search",
+  "version": "0.1.0",
+  "description": "Gridsome built-in markdown full-text search for Documentor",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimarulin/documentor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shimarulin/documentor/issues"
+  },
+  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-search#readme",
+  "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
+  "keywords": [
+    "gridsome",
+    "search"
+  ],
+  "main": "gridsome.server.js",
+  "files": [
+    "gridsome.client.js",
+    "gridsome.server.js"
+  ],
+  "directories": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@documentor/gridsome-plugin-axios": "^0.1.0",
+    "flexsearch": "^0.6.32"
+  },
+  "devDependencies": {
+    "eslint-plugin-jest": "^23.1.1",
+    "jest": "^24.9.0"
+  }
+}
