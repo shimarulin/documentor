@@ -1,4 +1,4 @@
-const glossaryBuilder = require('./glossaryBuilder')
+const suggestionsBuilder = require('./suggestionsBuilder')
 
 const document0 = `# Documentor
 
@@ -7,7 +7,7 @@ const document0 = `# Documentor
 ## Features and used plugins`
 const document1 = `## Installation and setup
 
-Install _package_ via __Yarn__:
+Install _packages_ via __Yarn__:
 
 \`\`\`bash
 yarn add @documentor/gridsome-plugin-search
@@ -15,28 +15,37 @@ yarn add @documentor/gridsome-plugin-search
 
 ...or NPM
 
-## Features and *used* plugins`
+## Features and *used* plugins
+
+Some files: \`package.json\`, \`README.md\`, \`/index.js\`, \`./test/main.js\`, ./raw.js`
 const documents = [
   document0,
   document1,
 ]
 
 const result = [
+  './raw.js',
   '@documentor/gridsome-plugin-search',
+  '`./test/main.js`',
+  '`/index.js`',
+  '`package.json`',
+  '`readme.md`',
   'add',
   'and',
   'document',
   'documentor',
   'easily',
   'features',
+  'files',
   'install',
   'installation',
   'npm',
   'or',
-  'package',
+  'packages',
   'plugins',
   'project',
   'setup',
+  'some',
   'used',
   'via',
   'yarn',
@@ -44,5 +53,5 @@ const result = [
 ]
 
 test('create glossary', () => {
-  expect(glossaryBuilder(documents)).toEqual(result)
+  expect(suggestionsBuilder(documents)).toEqual(result)
 })
