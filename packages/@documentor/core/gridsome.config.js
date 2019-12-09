@@ -57,7 +57,12 @@ module.exports = {
     // },
     {
       use: '@documentor/gridsome-plugin-search',
-      options: {},
+      options: {
+        languages: [
+          'en',
+          'ru',
+        ],
+      },
     },
   ],
 }
