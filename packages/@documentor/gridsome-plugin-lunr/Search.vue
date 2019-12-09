@@ -13,7 +13,7 @@
       {{ queryValidation.message }}
     </div>
 
-    {{ matchedDocumentList }}
+    {{ resultList }}
 
     <div
       v-if="error"
@@ -82,7 +82,7 @@ export default {
 
       return results
     },
-    matchedDocumentList () {
+    fullResultList () {
       return this.rawResultList.map(result => {
         const { id, title, path, content } = documentList ? documentList.find(document => document.id === result.ref) : {}
         return {
@@ -93,6 +93,10 @@ export default {
           content,
         }
       })
+    },
+    resultList () {
+      console.log(JSON.stringify(this.fullResultList))
+      return this.fullResultList
     },
   },
   beforeMount () {

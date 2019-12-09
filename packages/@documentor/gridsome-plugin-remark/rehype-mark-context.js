@@ -7,7 +7,7 @@ const findMarkNode = (tree) => {
     tree.children.forEach((node) => {
       const isMark = node.tagName === 'mark'
       if (isMark) {
-        console.log(tree)
+        // console.log(tree)
       } else {
         findMarkNode(node)
       }

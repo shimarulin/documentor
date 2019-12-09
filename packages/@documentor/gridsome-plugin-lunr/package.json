@@ -32,7 +32,8 @@
   "dependencies": {
     "@documentor/gridsome-plugin-axios": "^0.1.0",
     "lunr": "^2.3.8",
-    "lunr-languages": "^1.4.0"
+    "lunr-languages": "^1.4.0",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "eslint-plugin-jest": "^23.1.1",
