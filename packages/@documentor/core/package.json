@@ -20,8 +20,8 @@
     "serve": "gridsome develop"
   },
   "dependencies": {
+    "@documentor/gridsome-plugin-lunr": "^0.1.0",
     "@documentor/gridsome-plugin-remark": "^0.1.0",
-    "@documentor/gridsome-plugin-search": "^0.1.0",
     "gridsome": "^0.7.0"
   },
   "devDependencies": {

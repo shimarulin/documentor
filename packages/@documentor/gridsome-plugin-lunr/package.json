@@ -1,7 +1,7 @@
 {
-  "name": "@documentor/gridsome-plugin-search",
+  "name": "@documentor/gridsome-plugin-lunr",
   "version": "0.1.0",
-  "description": "Gridsome built-in markdown full-text search for Documentor",
+  "description": "Gridsome built-in full-text search for Documentor powered by Lunr",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/shimarulin/documentor/issues"
   },
-  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-search#readme",
+  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-lunr#readme",
   "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
   "keywords": [
     "gridsome",

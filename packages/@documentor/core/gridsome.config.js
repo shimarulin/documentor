@@ -56,7 +56,7 @@ module.exports = {
     //   options: {},
     // },
     {
-      use: '@documentor/gridsome-plugin-search',
+      use: '@documentor/gridsome-plugin-lunr',
       options: {
         languages: [
           'en',

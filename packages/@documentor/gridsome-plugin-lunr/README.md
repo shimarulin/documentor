@@ -22,7 +22,7 @@ npm install @documentor/gridsome-plugin-search
 module.exports = {
   plugins: [
     {
-      use: '@documentor/gridsome-plugin-search',
+      use: gridsome - plugin - lunr,
       options: {},
     },
   ],
