@@ -1,4 +1,4 @@
-# `@documentor/gridsome-plugin-search`
+# `@documentor/gridsome-plugin-lunr`
 
 > Gridsome built-in markdown full-text search for Documentor
 
@@ -7,13 +7,13 @@
 Install package via Yarn:
 
 ```bash
-yarn add @documentor/gridsome-plugin-search
+yarn add @documentor/gridsome-plugin-lunr
 ```
 
 ...or NPM
 
 ```bash
-npm install @documentor/gridsome-plugin-search
+npm install @documentor/gridsome-plugin-lunr
 ```
 
 ...and add this plugin to `gridsome.config.js`:
@@ -41,12 +41,9 @@ module.exports = {
 
 ## Development
 
-### FlexSearch + QuickScore
+Lunr example with highlight term - https://github.com/olivernn/moonwalkers
 
-- https://github.com/fwextensions/quick-score
-
-- Create suggestions index
-- Search results in suggestions by query with QuickScore or Fuse.js
-- Search results in document(index) suggestions
+- Create document index
+- Search results in index by query (if no exact match is found, try a pattern and fuzzy search)
 - Mark matches words/symbols
 - Trim content around words/symbols
