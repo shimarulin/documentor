@@ -6,8 +6,14 @@
       type="text"
       placeholder="Search"
     >
+    <div
+      v-if="queryValidation"
+      :class="queryValidation.type"
+    >
+      {{ queryValidation.message }}
+    </div>
 
-    {{ results }}
+    {{ matchedDocumentList }}
 
     <div
       v-if="error"
@@ -19,10 +25,10 @@
 </template>
 
 <script>
-import { SEARCH_SUGGESTIONS_PATH, SEARCH_INDEX_PATH } from './lib/constants'
+import { DOCUMENT_LIST_PATH, SEARCH_INDEX_PATH } from './lib/constants'
 
 let index
-let suggestions
+let documentList
 
 export default {
   name: 'Search',
@@ -49,25 +55,45 @@ export default {
       if (isAdvancedSearch && isFuzzy && !hasEditDistance) {
         message = {
           type: 'error',
+          // TODO: add i18n
           message: 'Edit distance must be numeric',
         }
       }
 
       return message
     },
-    results () {
-      if (this.query.length < 1) {
-        return []
-      }
+    rawResultList () {
+      if (this.query.length < 1) { return [] }
 
       const { isAdvancedSearch, isFuzzy, hasEditDistance } = this.queryMetadata
       const results = []
 
       if ((isAdvancedSearch && !isFuzzy) || (isAdvancedSearch && hasEditDistance)) {
         index && results.push(...index.search(this.query))
+      } else {
+        const forwardSearchResults = index.search(`${this.query}*`)
+        const containSearchResults = index.search(`*${this.query}*`)
+        const fuzzySearchResults = index.search(`*${this.query}*~2`)
+
+        results.push(...forwardSearchResults)
+        forwardSearchResults.length < 1 && results.push(...containSearchResults)
+        forwardSearchResults.length < 1 && containSearchResults.length < 1 && results.push(...fuzzySearchResults)
       }
 
       return results
+    },
+    matchedDocumentList () {
+      if (!documentList) { return [] }
+      return this.rawResultList.map(result => {
+        const { id, title, path, content } = documentList.find(document => document.id === result.ref)
+        return {
+          ...result,
+          id,
+          title,
+          path,
+          content,
+        }
+      })
     },
   },
   beforeMount () {
@@ -79,14 +105,13 @@ export default {
         }),
       this.$axios
         .request({
-          url: SEARCH_SUGGESTIONS_PATH,
+          url: DOCUMENT_LIST_PATH,
           baseURL: '/',
         }),
     ])
       .then(responseList => {
         index = this.$lunr.Index.load(responseList[0].data)
-        suggestions = responseList[1].data
-        console.log(index, suggestions)
+        documentList = responseList[0].data
       })
       .catch((error) => {
         const message = new DOMParser()

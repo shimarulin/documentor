@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@documentor/gridsome-plugin-axios": "^0.1.0",
-    "flexsearch": "^0.6.32",
     "lunr": "^2.3.8",
     "lunr-languages": "^1.4.0"
   },

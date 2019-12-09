@@ -5,20 +5,15 @@ const lunr = require('lunr')
 require('lunr-languages/lunr.stemmer.support')(lunr)
 require('lunr-languages/lunr.multi')(lunr)
 const {
-  DOCUMENT_TYPE_NAME,
   DOCUMENT_FIELD_LIST,
+  DOCUMENT_LIST_PATH,
+  DOCUMENT_TYPE_NAME,
   SEARCH_INDEX_PATH,
-  SEARCH_SUGGESTIONS_PATH,
 } = require('./lib/constants')
-const glossaryBuilder = require('./lib/suggestionsBuilder')
 const {
   getSaveFn,
   getServeFn,
 } = require('./lib/data2file')
-
-const glossaryMapper = (documentList) => {
-  return glossaryBuilder(documentList.map(document => document.content))
-}
 
 const createIndex = ({
   documentList = [],
@@ -64,17 +59,6 @@ class Search {
       })
 
     const documentList = []
-    // console.log(api)
-    // const gridsomeVueRemarkPluginConfig = api._app.config.plugins.find(plugin => plugin.use === '@gridsome/vue-remark')
-    // if (gridsomeVueRemarkPluginConfig) {
-    //   const { remark: remarkOptions, plugins: remarkPlugins } = gridsomeVueRemarkPluginConfig.options
-    //   console.log(remarkOptions, remarkPlugins)
-    // }
-    //
-    // api.setClientOptions({
-    //   ...options,
-    //   customOption: 'test',
-    // })
 
     api.onCreateNode(node => {
       if (node.internal.typeName === DOCUMENT_TYPE_NAME) {
@@ -89,7 +73,7 @@ class Search {
     // https://gridsome.org/docs/server-api/#apiconfigureserverfn
     api.configureServer(app => {
       const serve = getServeFn(app)
-      serve(SEARCH_SUGGESTIONS_PATH, glossaryMapper(documentList))
+      serve(DOCUMENT_LIST_PATH, documentList)
       serve(SEARCH_INDEX_PATH, createIndex({
         documentList,
         languageList,
@@ -99,7 +83,7 @@ class Search {
     // https://gridsome.org/docs/server-api/#apiafterbuildfn
     api.afterBuild(({ queue, config }) => {
       const save = getSaveFn(config.outputDir)
-      save(SEARCH_SUGGESTIONS_PATH, glossaryMapper(documentList))
+      save(DOCUMENT_LIST_PATH, documentList)
       save(SEARCH_INDEX_PATH, createIndex({
         documentList,
         languageList,
