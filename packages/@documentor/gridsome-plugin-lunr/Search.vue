@@ -83,9 +83,8 @@ export default {
       return results
     },
     matchedDocumentList () {
-      if (!documentList) { return [] }
       return this.rawResultList.map(result => {
-        const { id, title, path, content } = documentList.find(document => document.id === result.ref)
+        const { id, title, path, content } = documentList ? documentList.find(document => document.id === result.ref) : {}
         return {
           ...result,
           id,
@@ -111,7 +110,7 @@ export default {
     ])
       .then(responseList => {
         index = this.$lunr.Index.load(responseList[0].data)
-        documentList = responseList[0].data
+        documentList = responseList[1].data
       })
       .catch((error) => {
         const message = new DOMParser()
