@@ -28,41 +28,48 @@ export default {
   name: 'Search',
   data: () => ({
     query: '',
-    queryValidation: null,
-    results: [],
     options: {},
     error: null,
   }),
-  watch: {
-    query (nextQuery) {
-      this.getResults(nextQuery)
+  computed: {
+    queryMetadata () {
+      const isAdvancedSearch = this.query.search(/[*~^]/) !== -1
+      const isFuzzy = this.query.search(/~/) !== -1
+      const hasEditDistance = this.query.search(/~\d+$/) !== -1
+
+      return {
+        isAdvancedSearch,
+        isFuzzy,
+        hasEditDistance,
+      }
+    },
+    queryValidation () {
+      const { isAdvancedSearch, isFuzzy, hasEditDistance } = this.queryMetadata
+      let message = null
+      if (isAdvancedSearch && isFuzzy && !hasEditDistance) {
+        message = {
+          type: 'error',
+          message: 'Edit distance must be numeric',
+        }
+      }
+
+      return message
+    },
+    results () {
+      if (this.query.length < 1) {
+        return []
+      }
+
+      const { isAdvancedSearch, isFuzzy, hasEditDistance } = this.queryMetadata
+      const results = []
+
+      if ((isAdvancedSearch && !isFuzzy) || (isAdvancedSearch && hasEditDistance)) {
+        index && results.push(...index.search(this.query))
+      }
+
+      return results
     },
   },
-  // computed: {
-  //   result () {
-  //     if (this.query.length < 1) {
-  //       return []
-  //     }
-  //
-  //     const results = []
-  //
-  //     const isAdvancedSearch = this.query.search(/[*~^]/) !== -1
-  //     const isFuzzy = this.query.search(/~/) !== -1
-  //     const hasEditDistance = this.query.search(/~\d+$/) !== -1
-  //
-  //     if ((isAdvancedSearch && !isFuzzy) || (isAdvancedSearch && hasEditDistance)) {
-  //       index && results.push(...index.search(this.query))
-  //     } else if (isAdvancedSearch && isFuzzy && !hasEditDistance) {
-  //       console.error('Edit distance must be numeric')
-  //       this.queryValidation = {
-  //         type: 'error',
-  //         message: 'Edit distance must be numeric',
-  //       }
-  //     }
-  //
-  //     return results
-  //   },
-  // },
   beforeMount () {
     Promise.all([
       this.$axios
@@ -91,32 +98,6 @@ export default {
           statusText: error.response.statusText,
         }
       })
-  },
-  methods: {
-    getResults (query) {
-      if (query.length < 1) {
-        this.results = []
-        return
-      }
-
-      const results = []
-      this.queryValidation = null
-
-      const isAdvancedSearch = query.search(/[*~^]/) !== -1
-      const isFuzzy = query.search(/~/) !== -1
-      const hasEditDistance = query.search(/~\d+$/) !== -1
-
-      if ((isAdvancedSearch && !isFuzzy) || (isAdvancedSearch && hasEditDistance)) {
-        index && results.push(...index.search(query))
-      } else if (isAdvancedSearch && isFuzzy && !hasEditDistance) {
-        this.queryValidation = {
-          type: 'error',
-          message: 'Edit distance must be numeric',
-        }
-      }
-
-      this.results = results
-    },
   },
 }
 </script>
