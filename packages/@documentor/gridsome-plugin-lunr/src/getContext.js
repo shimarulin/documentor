@@ -4,7 +4,7 @@
  * @param {number[][]} positions - List of position: [start, length]
  * @return {string}
  */
-const wrapTerm = (source, positions) => positions.reduce((start, position, index) => {
+export const wrapTerm = (source, positions) => positions.reduce((start, position, index) => {
   const cursor = index > 0 ? positions[index - 1][0] + positions[index - 1][1] : 0
   const begin = source.slice(cursor, position[0])
   const term = source.slice(position[0], position[0] + position[1])
@@ -24,7 +24,7 @@ const wrapTerm = (source, positions) => positions.reduce((start, position, index
  * @param {string} wrapped - String with wrapped term(s)
  * @returns {ContextMetadata[]} - context metadata
  */
-const truncateTermContext = (wrapped) => {
+export const truncateTermContext = (wrapped) => {
   const exp = /(\n*)(.*<mark>.+<\/mark>.*)(\n*)/g
   const rowList = []
 
@@ -57,9 +57,4 @@ const truncateTermContext = (wrapped) => {
   }
 
   return rowList
-}
-
-module.exports = {
-  wrapTerm,
-  truncateTermContext,
 }

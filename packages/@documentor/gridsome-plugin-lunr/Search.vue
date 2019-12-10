@@ -13,19 +13,40 @@
       {{ queryValidation.message }}
     </div>
 
-    {{ resultList }}
-
     <div
       v-if="error"
       class="error"
     >
       {{ error.message }}: {{ error.status }} - {{ error.statusText }}
     </div>
+
+    <ul v-if="contextResultList.length > 0">
+      <li
+        v-for="result in contextResultList"
+        :key="result.ref"
+      >
+        <g-link :to="result.matchData.document.path">
+          {{ result.matchData.document.title }}
+        </g-link>
+
+        <ul>
+          <li
+            v-for="context in result.matchData.contextList"
+            :key="context.term + ': ' + context.text"
+          >
+            <h3 v-html="context.heading"/>
+
+            <div v-html="context.text"/>
+          </li>
+        </ul>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 import { DOCUMENT_LIST_PATH, SEARCH_INDEX_PATH } from './lib/constants'
+import { wrapTerm, truncateTermContext } from './src/getContext'
 
 let index
 let documentList
@@ -82,21 +103,62 @@ export default {
 
       return results
     },
-    fullResultList () {
-      return this.rawResultList.map(result => {
-        const { id, title, path, content } = documentList ? documentList.find(document => document.id === result.ref) : {}
+    documentResultList () {
+      return this.rawResultList.map(({ ref, score, matchData }) => {
+        const document = documentList ? documentList.find(document => document.id === ref) : {}
         return {
-          ...result,
-          id,
-          title,
-          path,
-          content,
+          ref,
+          score,
+          matchData: {
+            ...matchData,
+            document,
+          },
         }
       })
     },
-    resultList () {
-      console.log(JSON.stringify(this.fullResultList))
-      return this.fullResultList
+    /**
+     * Search result
+     * @typedef {Object} SearchResult
+     * @property {string} ref - Reference ID.
+     * @property {number} score - The result score.
+     * @property {Object} matchData - The result data.
+     * */
+
+    /**
+     * Get results for search
+     * @returns {SearchResult[]} - context metadata
+     */
+    contextResultList () {
+      return this.documentResultList.map(({ ref, score, matchData: { metadata, document } }) => {
+        const contextList = []
+
+        Object.entries(metadata).forEach(([
+          term,
+          entry,
+        ]) => {
+          Object.entries(entry).forEach(([
+            field,
+            { position: positionList },
+          ]) => {
+            const wrappedTerm = wrapTerm(document[field], positionList)
+            const truncatedTermContextList = truncateTermContext(wrappedTerm).map(ctx => ({
+              ...ctx, term,
+            }))
+
+            contextList.push(...truncatedTermContextList)
+          })
+        })
+
+        return {
+          ref,
+          score,
+          matchData: {
+            metadata,
+            document,
+            contextList,
+          },
+        }
+      })
     },
   },
   beforeMount () {
