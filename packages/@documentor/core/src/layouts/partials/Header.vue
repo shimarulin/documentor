@@ -1,6 +1,9 @@
 <template>
   <header>
     ---
+    <g-link to="/~search">
+      Search
+    </g-link>
   </header>
 </template>
 

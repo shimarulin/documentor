@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
     <Header/>
-<!--    <SearchBox/>-->
-    <Search/>
+    <!--    <SearchBox/>-->
+    <!--    <Search/>-->
     <g-link to="/">
       {{ $static.metadata.siteName }}
     </g-link>
