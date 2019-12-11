@@ -1,5 +1,5 @@
 import lunr from 'lunr'
-import Search from './Search'
+import Search from './src/components/Search'
 
 require('lunr-languages/lunr.stemmer.support')(lunr)
 

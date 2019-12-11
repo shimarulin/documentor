@@ -1,4 +1,4 @@
-import { wrapTerm, truncateTermContext } from './getContext'
+import { wrapTerm, truncateTermContext } from './Search'
 
 test('Wrap terms in single string', () => {
   const sourceString = 'Wraps the specified character'

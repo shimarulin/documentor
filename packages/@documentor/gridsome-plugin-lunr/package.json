@@ -18,6 +18,8 @@
   ],
   "main": "gridsome.server.js",
   "files": [
+    "lib",
+    "src",
     "gridsome.client.js",
     "gridsome.server.js"
   ],
