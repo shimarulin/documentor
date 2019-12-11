@@ -54,6 +54,7 @@ export const truncateTermContext = (wrapped) => {
     rowList.push({
       heading,
       text,
+      pos: exp.lastIndex,
     })
     prevRow = currentRow
   }

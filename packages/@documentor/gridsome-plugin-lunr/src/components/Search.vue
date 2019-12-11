@@ -20,9 +20,9 @@
       {{ error.message }}: {{ error.status }} - {{ error.statusText }}
     </div>
 
-    <ul v-if="contextResultList.result.length > 0">
+    <ul v-if="resultList.length > 0">
       <li
-        v-for="result in contextResultList.result"
+        v-for="result in resultList"
         :key="result.ref"
       >
         <g-link :to="result.matchData.document.path">
@@ -32,7 +32,7 @@
         <ul>
           <li
             v-for="context in result.matchData.contextList"
-            :key="context.term + ': ' + context.text"
+            :key="`${context.term}(${context.pos}): ${context.text}`"
           >
             <h3 v-html="context.heading"/>
 
@@ -88,6 +88,12 @@ export default {
         queryMetadata: {},
         resultList: [],
       }
+    },
+    resultList () {
+      return this.contextResultList.resultList.map(result => {
+        console.log(result)
+        return result
+      })
     },
   },
   beforeMount () {
