@@ -1,4 +1,4 @@
-const { wrapTerm, truncateTermContext } = require('./getContext')
+import { wrapTerm, truncateTermContext } from './getContext'
 
 test('Wrap terms in single string', () => {
   const sourceString = 'Wraps the specified character'
@@ -44,23 +44,23 @@ test('Truncate term context in multiple strings', () => {
   const expectedResult = [
     {
       heading: '## Heading 2',
-      context: 'Wraps the <mark>spec</mark>ified one <mark>char</mark>acter. Wraps&hellip;',
+      text: 'Wraps the <mark>spec</mark>ified one <mark>char</mark>acter. Wraps&hellip;',
     },
     {
       heading: '## Heading 2',
-      context: '&hellip;the <mark>spec</mark>ified two <mark>char</mark>acters. Wraps&hellip;',
+      text: '&hellip;the <mark>spec</mark>ified two <mark>char</mark>acters. Wraps&hellip;',
     },
     {
       heading: '## Heading 2',
-      context: '&hellip;the <mark>spec</mark>ified three <mark>char</mark>acters.',
+      text: '&hellip;the <mark>spec</mark>ified three <mark>char</mark>acters.',
     },
     {
       heading: '## Heading 2-1',
-      context: 'So, just another <mark>char</mark>acters.&hellip;',
+      text: 'So, just another <mark>char</mark>acters.&hellip;',
     },
     {
       heading: '### Heading 3',
-      context: 'And more <mark>char</mark>acters.&hellip;',
+      text: 'And more <mark>char</mark>acters.&hellip;',
     },
   ]
 
