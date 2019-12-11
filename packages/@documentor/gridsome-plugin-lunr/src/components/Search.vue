@@ -86,7 +86,7 @@ export default {
     contextResultList () {
       return this.query.length > 0 && index ? index.search(this.query) : {
         queryMetadata: {},
-        result: [],
+        resultList: [],
       }
     },
   },

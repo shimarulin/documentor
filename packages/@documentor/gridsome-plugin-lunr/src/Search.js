@@ -160,7 +160,7 @@ export default class Search {
 
     return {
       queryMetadata,
-      result: searchResultContextList,
+      resultList: searchResultContextList,
     }
   }
 }
