@@ -20,9 +20,9 @@
       {{ error.message }}: {{ error.status }} - {{ error.statusText }}
     </div>
 
-    <ul v-if="resultList.length > 0">
+    <ul v-if="results.resultList.length > 0">
       <li
-        v-for="result in resultList"
+        v-for="result in results.resultList"
         :key="result.ref"
       >
         <g-link :to="result.matchData.document.path">
@@ -36,7 +36,11 @@
           >
             <h3 v-html="context.heading"/>
 
-            <div v-html="context.text"/>
+            <div
+              v-for="entry in context.entries"
+              :key="entry"
+              v-html="entry"
+            />
           </li>
         </ul>
       </li>
@@ -58,7 +62,7 @@ export default {
   }),
   computed: {
     queryValidation () {
-      const { isAdvancedSearch, isFuzzy, hasEditDistance } = this.contextResultList.queryMetadata
+      const { isAdvancedSearch, isFuzzy, hasEditDistance } = this.results.queryMetadata
       let message = null
       if (isAdvancedSearch && isFuzzy && !hasEditDistance) {
         message = {
@@ -83,17 +87,11 @@ export default {
      * Get results for search
      * @returns {SearchResult[]} - context metadata
      */
-    contextResultList () {
+    results () {
       return this.query.length > 0 && index ? index.search(this.query) : {
         queryMetadata: {},
         resultList: [],
       }
-    },
-    resultList () {
-      return this.contextResultList.resultList.map(result => {
-        console.log(result)
-        return result
-      })
     },
   },
   beforeMount () {

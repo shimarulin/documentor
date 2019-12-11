@@ -117,6 +117,7 @@ export const mergeDocumentListToSearchResultList = (resultList, documentList) =>
 export const makeContextToSearchResultList = (wrapTermFn, truncateTermContextFn, resultDocumentList) => {
   return resultDocumentList.map(({ ref, score, matchData: { metadata, document } }) => {
     const contextList = []
+    const contextListByHeadings = []
 
     Object.entries(metadata).forEach(([
       term,
@@ -139,13 +140,32 @@ export const makeContextToSearchResultList = (wrapTermFn, truncateTermContextFn,
       })
     })
 
+    contextList.forEach(({ id, heading, text }) => {
+      const sameSection = contextListByHeadings.find(section => section.heading === heading)
+
+      if (sameSection && sameSection.heading !== text) {
+        sameSection.id = sameSection.id + id
+        sameSection.entries.push(text)
+      } else {
+        const ctx = {
+          id,
+          heading,
+          entries: [],
+        }
+
+        heading !== text && ctx.entries.push(text)
+
+        contextListByHeadings.push(ctx)
+      }
+    })
+
     return {
       ref,
       score,
       matchData: {
         metadata,
         document,
-        contextList,
+        contextList: contextListByHeadings,
       },
     }
   })
