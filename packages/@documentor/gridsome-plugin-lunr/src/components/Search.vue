@@ -32,7 +32,7 @@
         <ul>
           <li
             v-for="context in result.matchData.contextList"
-            :key="`${context.term}(${context.pos}): ${context.text}`"
+            :key="context.id"
           >
             <h3 v-html="context.heading"/>
 

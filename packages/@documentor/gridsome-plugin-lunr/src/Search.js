@@ -127,9 +127,13 @@ export const makeContextToSearchResultList = (wrapTermFn, truncateTermContextFn,
         { position: positionList },
       ]) => {
         const wrappedTerm = wrapTermFn(document[field], positionList)
-        const truncatedTermContextList = truncateTermContextFn(wrappedTerm).map(ctx => ({
-          ...ctx, term,
-        }))
+        const truncatedTermContextList = truncateTermContextFn(wrappedTerm).map(ctx => {
+          return {
+            ...ctx,
+            term,
+            id: `${ref} - '${term}' in ${field}(${score}, ${ctx.pos}): ${ctx.text}`,
+          }
+        })
 
         contextList.push(...truncatedTermContextList)
       })
