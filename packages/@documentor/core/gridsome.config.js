@@ -21,6 +21,7 @@ module.exports = {
         typeName: 'Documentation',
         baseDir: '../../../docs',
         index: [
+          'index',
           'README',
         ],
         // pathPrefix: '/', // by default
@@ -37,20 +38,6 @@ module.exports = {
         // },
       },
     },
-    // {
-    //   use: '@documentor/gridsome-plugin-fuse',
-    //   options: {
-    //     collections: [
-    //       {
-    //         typeName: 'Documentation',
-    //         fields: [
-    //           'title',
-    //           'content',
-    //         ],
-    //       },
-    //     ],
-    //   },
-    // },
     // {
     //   use: '@documentor/gridsome-plugin-remark',
     //   options: {},
