@@ -18,7 +18,6 @@ const {
 const createIndex = ({
   documentList = [],
   fieldList = [
-    'title',
     'content',
   ],
   languageList = [

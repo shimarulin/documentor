@@ -20,27 +20,30 @@
       {{ error.message }}: {{ error.status }} - {{ error.statusText }}
     </div>
 
-    <ul v-if="results.resultList.length > 0">
-      <li
-        v-for="result in results.resultList"
-        :key="result.ref"
-      >
-        <g-link :to="result.matchData.document.path">
-          {{ result.matchData.document.title }}
-        </g-link>
+    <!--    {{ results }}-->
 
+    <ul v-if="results.length > 0">
+      <li
+        v-for="result in results"
+        :key="result"
+      >
         <ul>
           <li
-            v-for="context in result.matchData.contextList"
-            :key="context.id"
+            v-for="entry in result.entries"
+            :key="entry"
           >
-            <h3 v-html="context.heading"/>
+            <g-link :to="entry.path">
+              <span v-html="entry.heading"/>
+            </g-link>
 
-            <div
-              v-for="entry in context.entries"
-              :key="entry"
-              v-html="entry"
-            />
+            <ul>
+              <li
+                v-for="context in entry.contextList"
+                :key="context"
+              >
+                <div v-html="context"/>
+              </li>
+            </ul>
           </li>
         </ul>
       </li>
@@ -48,11 +51,41 @@
   </div>
 </template>
 
+<static-query>
+  {
+    allDocumentation {
+      edges {
+        node {
+          id
+          headings {
+            anchor
+            depth
+            value
+          }
+        }
+      }
+    }
+  }
+</static-query>
+
 <script>
+import clone from 'ramda/src/clone'
 import { DOCUMENT_LIST_PATH, SEARCH_INDEX_PATH } from '../../lib/constants'
 import Search from '../Search'
 
 let index
+
+const getQueryMetadata = (query) => {
+  const isAdvancedSearch = query.search(/[*~^]/) !== -1
+  const isFuzzy = query.search(/~/) !== -1
+  const hasEditDistance = query.search(/~\d+$/) !== -1
+
+  return {
+    isAdvancedSearch,
+    isFuzzy,
+    hasEditDistance,
+  }
+}
 
 export default {
   name: 'Search',
@@ -62,7 +95,7 @@ export default {
   }),
   computed: {
     queryValidation () {
-      const { isAdvancedSearch, isFuzzy, hasEditDistance } = this.results.queryMetadata
+      const { isAdvancedSearch, isFuzzy, hasEditDistance } = getQueryMetadata(this.query)
       let message = null
       if (isAdvancedSearch && isFuzzy && !hasEditDistance) {
         message = {
@@ -88,10 +121,7 @@ export default {
      * @returns {SearchResult[]} - context metadata
      */
     results () {
-      return this.query.length > 0 && index ? index.search(this.query) : {
-        queryMetadata: {},
-        resultList: [],
-      }
+      return this.query.length > 0 && index ? index.search(this.query) : []
     },
   },
   beforeMount () {
@@ -108,7 +138,12 @@ export default {
         }),
     ])
       .then(responseList => {
-        index = new Search(responseList[0].data, responseList[1].data)
+        index = new Search(responseList[0].data, responseList[1].data.map(doc => {
+          return {
+            ...doc,
+            ...clone(this.$static.allDocumentation.edges.find(entry => entry.node.id === doc.id).node),
+          }
+        }))
       })
       .catch((error) => {
         const message = new DOMParser()

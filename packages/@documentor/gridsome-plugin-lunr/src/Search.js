@@ -1,4 +1,5 @@
 import lunr from 'lunr'
+import pipe from 'ramda/src/pipe'
 
 /**
  * Wraps the specified character ranges with the 'mark' tag
@@ -34,27 +35,29 @@ export const truncateTermContext = (wrapped) => {
   let currentRow
   while ((currentRow = exp.exec(wrapped)) !== null) {
     const currentPrefix = prevRow ? prevRow[3] : ''
-    const text = (currentPrefix + currentRow[0])
+    const contextString = (currentPrefix + currentRow[0])
       .replace(/\n{2}/g, '')
       .replace(/\n/g, '&hellip;')
       .trim()
 
-    let heading = ''
+    let headingString = ''
     const isHeadingContext = currentRow[0].search(/\n*#/) !== -1
     if (isHeadingContext) {
-      heading = currentRow[0].replace(/\n*/g, '')
+      headingString = currentRow[0].replace(/\n*/g, '')
     } else {
       const headings = wrapped
         .slice(0, exp.lastIndex)
-        .match(/#{2,5}.+/g)
+        .match(/#{1,6}.+/g)
 
-      heading = headings ? headings.pop() : ''
+      headingString = headings ? headings.pop() : ''
     }
 
+    const headingDepth = headingString.match(/#{1,6}/)[0].trim().length
+
     rowList.push({
-      heading,
-      text,
-      pos: exp.lastIndex,
+      heading: headingString.replace(/#{1,6}\s/, ''),
+      depth: headingDepth,
+      context: contextString.replace(/#{1,6}\s/, ''),
     })
     prevRow = currentRow
   }
@@ -62,44 +65,31 @@ export const truncateTermContext = (wrapped) => {
   return rowList
 }
 
-// queryMetadata
-export const getQueryMetadata = (query) => {
-  const isAdvancedSearch = query.search(/[*~^]/) !== -1
-  const isFuzzy = query.search(/~/) !== -1
-  const hasEditDistance = query.search(/~\d+$/) !== -1
+export const expandQuery = (query) => ([
+  // exact search
+  query,
 
-  return {
-    isAdvancedSearch,
-    isFuzzy,
-    hasEditDistance,
-  }
-}
+  // forward search
+  `${query}*`,
 
-// rawResultList
-export const getSearchResultList = (index, query, queryMetadata) => {
-  if (query.length < 1) { return [] }
+  // contain search
+  `*${query}*`,
 
-  const { isAdvancedSearch, isFuzzy, hasEditDistance } = queryMetadata
+  // fuzzy search
+  `*${query}*~2`,
+])
 
+export const walkSearch = (index, queryList) => {
   const results = []
 
-  if ((isAdvancedSearch && !isFuzzy) || (isAdvancedSearch && hasEditDistance)) {
-    index && results.push(...index.search(query))
-  } else if (!isAdvancedSearch) {
-    const forwardSearchResults = index.search(`${query}*`)
-    const containSearchResults = index.search(`*${query}*`)
-    const fuzzySearchResults = index.search(`*${query}*~2`)
-
-    results.push(...forwardSearchResults)
-    forwardSearchResults.length < 1 && results.push(...containSearchResults)
-    forwardSearchResults.length < 1 && containSearchResults.length < 1 && results.push(...fuzzySearchResults)
-  }
+  queryList.forEach(query => {
+    results.length < 1 && results.push(...index.search(query))
+  })
 
   return results
 }
 
-// documentResultList
-export const mergeDocumentListToSearchResultList = (resultList, documentList) => {
+export const fillDocumentInfo = (documentList, resultList) => {
   return resultList.map(({ ref, score, matchData }) => {
     const document = documentList ? documentList.find(document => document.id === ref) : {}
     return {
@@ -113,79 +103,123 @@ export const mergeDocumentListToSearchResultList = (resultList, documentList) =>
   })
 }
 
-// contextResultList
-export const makeContextToSearchResultList = (wrapTermFn, truncateTermContextFn, resultDocumentList) => {
-  return resultDocumentList.map(({ ref, score, matchData: { metadata, document } }) => {
-    const contextList = []
-    const contextListByHeadings = []
+const simplifyResults = (resultList) => resultList.map(({ ref, score, matchData: { metadata, document } }) => {
+  const fields = {}
 
-    Object.entries(metadata).forEach(([
-      term,
-      entry,
+  Object.values(metadata).forEach(entry => {
+    Object.entries(entry).forEach(([
+      field,
+      { position: positionList },
     ]) => {
-      Object.entries(entry).forEach(([
-        field,
-        { position: positionList },
-      ]) => {
-        const wrappedTerm = wrapTermFn(document[field], positionList)
-        const truncatedTermContextList = truncateTermContextFn(wrappedTerm).map(ctx => {
-          return {
-            ...ctx,
-            term,
-            id: `${ref} - '${term}' in ${field}(${score}, ${ctx.pos}): ${ctx.text}`,
-          }
-        })
-
-        contextList.push(...truncatedTermContextList)
-      })
-    })
-
-    contextList.forEach(({ id, heading, text }) => {
-      const sameSection = contextListByHeadings.find(section => section.heading === heading)
-
-      if (sameSection && sameSection.heading !== text) {
-        sameSection.id = sameSection.id + id
-        sameSection.entries.push(text)
-      } else {
-        const ctx = {
-          id,
-          heading,
-          entries: [],
+      if (!Object.prototype.hasOwnProperty.call(fields, field)) {
+        fields[field] = {
+          positions: [],
+          content: document[field],
         }
-
-        heading !== text && ctx.entries.push(text)
-
-        contextListByHeadings.push(ctx)
       }
-    })
 
-    return {
-      ref,
-      score,
-      matchData: {
-        metadata,
-        document,
-        contextList: contextListByHeadings,
-      },
-    }
+      fields[field].positions = [
+        ...fields[field].positions,
+        ...positionList,
+      ].sort((a, b) => a[0] - b[0])
+    })
   })
+
+  return {
+    ...fields.content,
+    ref,
+    score,
+    headings: document.headings,
+    path: document.path,
+  }
+})
+
+export const groupContext = (contextItemList) => {
+  const contextGroupList = []
+
+  contextItemList.forEach(({ heading, depth, context }) => {
+    const contextGroupItem = contextGroupList
+      .find(contextGroup => contextGroup.heading === heading) ||
+      (contextGroupList.push({
+        heading,
+        depth,
+        contextList: [],
+      }) &&
+        contextGroupList.slice(-1)[0])
+
+    context !== heading && contextGroupItem.contextList.push(context)
+  })
+
+  return contextGroupList
 }
 
 export default class Search {
-  constructor (index, documentList) {
+  constructor (
+    index,
+    documentList,
+    expandQueryFn = expandQuery,
+    walkSearchFn = walkSearch,
+    fillDocumentInfoFn = fillDocumentInfo,
+    simplifyResultsFn = simplifyResults,
+    wrapTermFn = wrapTerm,
+    truncateTermContextFn = truncateTermContext,
+    groupContextFn = groupContext,
+  ) {
     this.documentList = documentList
     this.index = lunr.Index.load(index)
+    this._expandQueryFn = expandQueryFn
+    this._walkSearchFn = walkSearchFn
+    this._fillDocumentInfoFn = fillDocumentInfoFn
+    this._simplifyResultsFn = simplifyResultsFn
+    this._wrapTermFn = wrapTermFn
+    this._truncateTermContextFn = truncateTermContextFn
+    this._groupContextFn = groupContextFn
   }
 
   search (query) {
-    const queryMetadata = getQueryMetadata(query)
-    const searchResultList = getSearchResultList(this.index, query, queryMetadata)
-    const searchResultDocumentList = mergeDocumentListToSearchResultList(searchResultList, this.documentList)
-    const searchResultContextList = makeContextToSearchResultList(wrapTerm, truncateTermContext, searchResultDocumentList)
+    return pipe(
+      q => this._expandQueryFn(q),
+      qList => this._walkSearchFn(this.index, qList),
+      rList => this._fillDocumentInfoFn(this.documentList, rList),
+      rList => this._simplifyResultsFn(rList),
+      rList => rList.map(({ content, headings, path, positions }) => ({
+        content: this._wrapTermFn(content, positions),
+        headings,
+        path,
+      })),
+      rList => rList.map(({ content, headings, path }) => ({
+        contextItemList: this._truncateTermContextFn(content),
+        headings,
+        path,
+      })),
+      rList => rList.map(({ contextItemList, headings, path }) => ({
+        contextGroupList: this._groupContextFn(contextItemList),
+        headings,
+        path,
+      })),
+      rList => rList.map(({ contextGroupList, headings, path }) => {
+        console.log(contextGroupList)
+        // const str = 'Wraps the <mark>spec</mark>ified one <mark>char</mark>acter.'
+        // const a = new DOMParser().parseFromString(str, 'text/html').body.innerText.trim()
 
-    return {
-      queryMetadata,
-      resultList: searchResultContextList,
-    }
+        return {
+          entries: contextGroupList.map(({
+            heading,
+            depth,
+            contextList,
+          }) => {
+            const hText = new DOMParser().parseFromString(heading, 'text/html').body.innerText.trim()
+            console.log(headings.find(h => h.value === hText).anchor)
+
+            return {
+              heading,
+              depth,
+              path: path + headings.find(h => h.value === hText).anchor,
+              contextList,
+            }
+          }),
+        }
+      }),
+    )(query)
   }
 }
