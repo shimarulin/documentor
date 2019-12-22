@@ -13,7 +13,7 @@ const {
 const {
   getSaveFn,
   getServeFn,
-} = require('./lib/data2file')
+} = require('./lib/utils')
 
 const createIndex = ({
   documentList = [],

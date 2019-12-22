@@ -159,29 +159,6 @@ test('Result grouping', () => {
       ],
     },
   ]
-  // const expected = [
-  //   {
-  //     heading: {
-  //       title: '<mark>content</mark> for <mark>context',
-  //       anchor: '#вывод-цвета-в-консоль',
-  //       path: '/test/',
-  //       context: [
-  //         '...example <mark>content</mark> for <mark>context</mark>...',
-  //       ],
-  //     },
-  //     sections: [
-  //       {
-  //         // depth: 3,
-  //         title: '<mark>content</mark> for <mark>context',
-  //         anchor: '#content-for-context',
-  //         path: '/test/#content-for-context',
-  //         context: [
-  //           '...example <mark>content</mark> for <mark>context</mark>...',
-  //         ],
-  //       },
-  //     ],
-  //   },
-  // ]
 
   expect(groupContext(input)).toEqual(expected)
 })

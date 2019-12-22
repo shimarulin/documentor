@@ -198,10 +198,6 @@ export default class Search {
         path,
       })),
       rList => rList.map(({ contextGroupList, headings, path }) => {
-        console.log(contextGroupList)
-        // const str = 'Wraps the <mark>spec</mark>ified one <mark>char</mark>acter.'
-        // const a = new DOMParser().parseFromString(str, 'text/html').body.innerText.trim()
-
         return {
           entries: contextGroupList.map(({
             heading,
@@ -209,8 +205,6 @@ export default class Search {
             contextList,
           }) => {
             const hText = new DOMParser().parseFromString(heading, 'text/html').body.innerText.trim()
-            console.log(headings.find(h => h.value === hText).anchor)
-
             return {
               heading,
               depth,
