@@ -10,6 +10,11 @@ module.exports = function (api) {
     // Use the Data Store API here: https://gridsome.org/docs/data-store-api/
   })
 
+  // Replace sorting prefix
+  api.onCreateNode(options => {
+    options.path = options.path.replace(/\/\d+-/g, '/')
+  })
+
   api.createPages(({ createPage }) => {
     // Use the Pages API here: https://gridsome.org/docs/pages-api/
     createPage({
