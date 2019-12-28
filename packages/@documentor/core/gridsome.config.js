@@ -1,8 +1,23 @@
-// TODO: Добавить резолвер для .documentorrc.js
 const { cosmiconfigSync } = require('cosmiconfig')
 
 const explorerSync = cosmiconfigSync('documentor')
 const documentorRc = explorerSync.search()
+
+const remarkPlugins = []
+
+if (documentorRc.config.emoji === 'native') {
+  remarkPlugins.push('remark-gemoji-to-emoji')
+} else if (documentorRc.config.emoji === 'github') {
+  remarkPlugins.push(
+    'remark-gemoji-to-emoji',
+    [
+      'remark-html-emoji-image',
+      {
+        base: 'https://github.githubassets.com/images/icons/emoji/',
+      },
+    ],
+  )
+}
 
 console.log(documentorRc.config)
 
@@ -35,7 +50,7 @@ module.exports = {
         // pathPrefix: '/', // by default
         pathPrefix: '/',
         template: './src/templates/Documentation.vue',
-        plugins: [],
+        plugins: remarkPlugins,
         // remark: {
         //   autolinkHeadings: {
         //     content: {

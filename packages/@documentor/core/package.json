@@ -23,17 +23,18 @@
     "serve": "gridsome develop"
   },
   "dependencies": {
+    "@documentor/gridsome-plugin-git-log": "^0.1.0",
     "@documentor/gridsome-plugin-lunr": "^0.1.0",
     "@documentor/gridsome-plugin-remark": "^0.1.0",
+    "@gridsome/vue-remark": "^0.1.9",
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
     "cosmiconfig": "^6.0.0",
-    "gridsome": "^0.7.12"
+    "gridsome": "^0.7.12",
+    "remark-gemoji-to-emoji": "^1.1.0",
+    "remark-html-emoji-image": "^1.0.0"
   },
   "devDependencies": {
-    "@documentor/gridsome-plugin-git-log": "^0.1.0",
-    "@documentor/gridsome-plugin-remark": "^0.1.0",
-    "@gridsome/vue-remark": "^0.1.9",
     "@platr/eslint-config-vue": "^0.1.4"
   }
 }

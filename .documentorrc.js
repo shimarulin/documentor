@@ -1,3 +1,3 @@
 module.exports = {
-  emoji: 'native',
+  emoji: 'github',
 }
