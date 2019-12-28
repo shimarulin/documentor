@@ -1,4 +1,10 @@
 // TODO: Добавить резолвер для .documentorrc.js
+const { cosmiconfigSync } = require('cosmiconfig')
+
+const explorerSync = cosmiconfigSync('documentor')
+const documentorRc = explorerSync.search()
+
+console.log(documentorRc.config)
 
 // This is where project configuration and plugin options are located.
 // Learn more: https://gridsome.org/docs/config

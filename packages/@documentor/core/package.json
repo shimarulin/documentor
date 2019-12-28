@@ -25,6 +25,9 @@
   "dependencies": {
     "@documentor/gridsome-plugin-lunr": "^0.1.0",
     "@documentor/gridsome-plugin-remark": "^0.1.0",
+    "chalk": "^3.0.0",
+    "commander": "^4.0.1",
+    "cosmiconfig": "^6.0.0",
     "gridsome": "^0.7.12"
   },
   "devDependencies": {
