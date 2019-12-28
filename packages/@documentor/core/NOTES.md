@@ -1,5 +1,10 @@
 # Dev notes
 
+## i18n
+
+- https://nuxt-community.github.io/nuxt-i18n/routing.html
+- https://vuepress.vuejs.org/guide/i18n.html#site-level-i18n-config
+
 ## Libs and plugins
 
 - https://gridsome.org/plugins/@gridsome/vue-remark . Uses:

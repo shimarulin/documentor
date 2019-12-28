@@ -13,6 +13,9 @@
   },
   "homepage": "https://github.com/shimarulin/documentor#readme",
   "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
+  "bin": {
+    "documentor": "./bin/documentor.js"
+  },
   "scripts": {
     "build": "gridsome build",
     "explore": "gridsome explore",
@@ -22,11 +25,10 @@
   "dependencies": {
     "@documentor/gridsome-plugin-lunr": "^0.1.0",
     "@documentor/gridsome-plugin-remark": "^0.1.0",
-    "gridsome": "^0.7.0"
+    "gridsome": "^0.7.12"
   },
   "devDependencies": {
-    "@documentor/gridsome-plugin-fuse": "^0.1.0",
-    "@documentor/gridsome-plugin-git-info": "^0.1.0",
+    "@documentor/gridsome-plugin-git-log": "^0.1.0",
     "@documentor/gridsome-plugin-remark": "^0.1.0",
     "@gridsome/vue-remark": "^0.1.9",
     "@platr/eslint-config-vue": "^0.1.4"
