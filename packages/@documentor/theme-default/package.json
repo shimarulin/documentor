@@ -1,0 +1,27 @@
+{
+  "name": "@documentor/theme-default",
+  "version": "0.1.0",
+  "description": "Documentor default theme",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shimarulin/documentor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shimarulin/documentor/issues"
+  },
+  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/theme-default#readme",
+  "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
+  "main": "gridsome.server.js",
+  "files": [
+    "gridsome.client.js",
+    "gridsome.server.js"
+  ],
+  "directories": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
