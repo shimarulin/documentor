@@ -1,5 +1,5 @@
 {
-  "name": "@documentor/gridsome-plugin-git-info",
+  "name": "@documentor/gridsome-plugin-git-log",
   "version": "0.1.0",
   "description": "Gridsome plugin to get info from git",
   "license": "MIT",
@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/shimarulin/documentor/issues"
   },
-  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-git-info#readme",
+  "homepage": "https://github.com/shimarulin/documentor/tree/master/packages/@documentor/gridsome-plugin-git-log#readme",
   "author": "Vyacheslav Shimarulin <shimarulin@gmail.com>",
   "keywords": [
     "gridsome",

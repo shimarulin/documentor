@@ -8,8 +8,10 @@ module.exports = function (api, { nodeTypeList }) {
 
       return {
         ...node,
-        createdAt: createdAt !== '' ? new Date(createdAt) : new Date(),
-        updatedAt: updatedAt !== '' ? new Date(updatedAt) : new Date(),
+        git: {
+          createdAt: createdAt !== '' ? new Date(createdAt) : new Date(),
+          updatedAt: updatedAt !== '' ? new Date(updatedAt) : new Date(),
+        },
       }
     }
   })
